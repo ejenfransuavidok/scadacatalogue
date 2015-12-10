@@ -8,6 +8,8 @@ QT       += core
 
 QT       -= gui
 
+QT       += xlsx
+
 TARGET = scadacatalogue
 CONFIG   += console
 CONFIG   -= app_bundle
