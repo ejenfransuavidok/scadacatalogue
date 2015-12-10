@@ -1,4 +1,5 @@
 #include <QCoreApplication>
+#include <assert.h>
 #include "scada.hpp"
 
 
@@ -8,6 +9,7 @@ int main(int argc, char *argv[])
 
     try {
         scada::SCADA *scada = new scada::SCADA(argc, argv, a);
+        assert(scada);
         scada->init();
     } catch (QString *message) {
         qDebug() << *message;
