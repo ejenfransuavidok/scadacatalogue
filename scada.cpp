@@ -41,7 +41,7 @@ void SCADA::init() {
     this->document->setColumnWidth(DATETIME_COL, 20.);
     this->document->setColumnWidth(MESSAGE_COL, 40.);
     this->document->write(first_empty_row, DATETIME_COL, this->DateTime, format);
-    this->document->write(first_empty_row, MESSAGE_COL, this->Message, format);
+    this->document->write(first_empty_row, MESSAGE_COL, this->Message.toUtf8(), format);
     this->document->saveAs(this->path);
     exit(0);
 }
