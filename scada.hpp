@@ -27,6 +27,7 @@ private:
     QString prepare_file_name_ext(QString filename, QString ext, QString append="");
     bool parse_input(int argc, char *argv[]);
     int get_first_empty();
+    QString decoder(QString inp);
 
     int current_row;
     QStringList input;
