@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <QRegExp>
 #include "scada.hpp"
 
 namespace scada { // ::scada
@@ -8,16 +9,14 @@ SCADA::SCADA(int argc, char *argv[], QCoreApplication &a)
 {
     /**
      *
-     * input format: FileName DateTime Message
+     * input format: [FileName][DateTime][Message]
      *
      */
-    if (argc - 1 != COUNT_ARGC)
-        throw new QString("argv string must contains 3 elements, but contains " + QString::number(argc));
-    this->argc = argc;
-    this->argv = argv;
-    this->FileName = this->prepare_file_name_ext(argv[1], "xlsx");
-    this->DateTime = argv[2];
-    this->Message = argv[3];
+    if (! this->parse_input(argc, argv))
+        throw new QString("input format: [FileName][DateTime][Message]");
+    this->FileName = this->prepare_file_name_ext(this->input[FILENAME], "xlsx");
+    this->DateTime = this->input[DATETIME];
+    this->Message = this->input[MESSAGE];
     this->path = QDir(QDir::currentPath()).filePath(this->FileName);
     this->document = new QXlsx::Document(this->path);
     assert(this->document);
@@ -60,6 +59,20 @@ QString SCADA::prepare_file_name_ext(QString filename, QString ext, QString appe
         fname +=  ("." + ext);
     }
     return fname;
+}
+
+bool SCADA::parse_input(int argc, char *argv[]) {
+    QRegExp rx("\\[(\\w+)\\]");
+    QString str;
+    for(int i=1; i<argc; i++) {
+        str += argv[i];
+    }
+    int pos = 0;
+    while ((pos = rx.indexIn(str, pos)) != -1) {
+        this->input << rx.cap(1);
+        pos += rx.matchedLength();
+    }
+    return (this->input.size() == 3);
 }
 
 } // ::scada

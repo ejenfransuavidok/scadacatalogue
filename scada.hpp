@@ -11,6 +11,9 @@
 #define DATETIME_COL 1
 #define MESSAGE_COL 2
 #define SHEET_NAME "Каталог событий"
+#define FILENAME 0
+#define DATETIME 1
+#define MESSAGE 2
 
 namespace scada { // ::scada
 
@@ -22,11 +25,11 @@ public:
 
 private:
     QString prepare_file_name_ext(QString filename, QString ext, QString append="");
+    bool parse_input(int argc, char *argv[]);
     int get_first_empty();
 
-    int argc;
-    char **argv;
     int current_row;
+    QStringList input;
     QString path;
     QString FileName;
     QString DateTime;
