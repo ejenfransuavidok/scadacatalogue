@@ -62,13 +62,14 @@ QString SCADA::prepare_file_name_ext(QString filename, QString ext, QString appe
 }
 
 bool SCADA::parse_input(int argc, char *argv[]) {
-    QRegExp rx("\\[(\\w+)\\]");
+    QRegExp rx("\\[([^\\]\\[]+)\\]");
     QString str;
     for(int i=1; i<argc; i++) {
         str += argv[i];
     }
     int pos = 0;
     while ((pos = rx.indexIn(str, pos)) != -1) {
+        qDebug() << rx.cap(1);
         this->input << rx.cap(1);
         pos += rx.matchedLength();
     }
